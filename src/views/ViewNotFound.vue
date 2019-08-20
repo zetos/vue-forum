@@ -1,7 +1,7 @@
 <template>
-  <div class="col-full">
-    <h1>Page Not Found</h1>
-    <p>
+  <div class="col-full" :class="$style.centered">
+    <h1 :class="$style.headingLarge">Page Not Found</h1>
+    <p :class="$style.textLarge">
       Ooops, we couldn't find what you are looking for. Why don't you
       <router-link :to="{ name: 'ViewHome' }">go home instead?</router-link>
     </p>
@@ -12,15 +12,15 @@
 export default {};
 </script>
 
-<style scoped>
-h1 {
+<style module>
+.headingLarge {
   font-size: 100px;
 }
-p {
+.textLarge {
   font-size: 50px;
   font-weight: 100px;
 }
-div {
+.centered {
   text-align: center;
 }
 </style>
