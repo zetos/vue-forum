@@ -7,12 +7,12 @@
 
 <script>
 import sourceData from '@/data';
-import ThreadList from './ThreadList';
+import ThreadList from '@/components/ThreadList';
 
 console.log(sourceData);
 
 export default {
-  name: 'HelloWorld',
+  name: 'ViewHome',
   components: {
     ThreadList
   },

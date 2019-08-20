@@ -40,7 +40,7 @@
 import sourceData from '@/data';
 
 export default {
-  name: 'ThreadRead',
+  name: 'ViewThreadRead',
   props: {
     id: {
       required: true,

@@ -3,7 +3,7 @@
     <div>
       <p>
         <router-link
-          :to="{ name: 'ThreadRead', params: { id: thread['.key'] } }"
+          :to="{ name: 'ViewThreadRead', params: { id: thread['.key'] } }"
         >
           {{ thread.title }}
         </router-link>
@@ -37,7 +37,7 @@
 import sourceData from '@/data';
 
 export default {
-  name: 'ThreadListItem',
+  name: 'PageThreadListItem',
   props: {
     thread: {
       required: true,
