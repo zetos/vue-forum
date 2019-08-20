@@ -27,6 +27,12 @@ export default new Router({
       name: 'ViewThreadRead',
       props: true,
       component: () => import('@/views/ViewThreadRead.vue')
+    },
+    {
+      path: '*',
+      name: 'ViewNotFound',
+      // redirect: { name: 'ViewHome' }
+      component: () => import('@/views/ViewNotFound.vue')
     }
   ]
 });
