@@ -2,7 +2,7 @@
   <div class="col-large push-top">
     <h1>{{ thread.title }}</h1>
     <PostList :posts="posts" />
-    <form @submit.prevent="addPost">
+    <form v-on:submit.prevent="addPost">
       <div class="form-group">
         <textarea
           name=""
@@ -24,7 +24,6 @@ import sourceData from '@/data';
 import PostList from '@/components/PostList';
 
 export default {
-  name: 'ViewThreadRead',
   components: {
     PostList
   },
@@ -56,12 +55,12 @@ export default {
         text: this.newPostText,
         publishedAt: Math.floor(Date.now() / 1000),
         threadId: this.id,
-        userId: 'ALXhxjwgY9PinwNGHpfai6OWyDu2',
+        userId: 'jVa6Go6Nl1Urkag1R2p9CHTf4ny1',
         '.key': postId
       };
 
       this.$set(sourceData.posts, postId, post);
-      this.$set(this.thread.posts[postId], postId, postId);
+      this.$set(this.thread.posts, postId, postId);
       this.$set(sourceData.users[post.userId].posts, postId, postId);
       this.newPostText = '';
     }
