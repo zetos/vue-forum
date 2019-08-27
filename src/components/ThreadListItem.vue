@@ -35,13 +35,9 @@
 
 <script>
 import sourceData from '@/data';
-import AppDate from './AppDate';
 
 export default {
   name: 'PageThreadListItem',
-  components: {
-    AppDate
-  },
   props: {
     thread: {
       required: true,
