@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import ViewHome from './views/ViewHome.vue';
+import ViewHome from '@/views/ViewHome.vue';
 
 Vue.use(Router);
 
@@ -21,6 +21,12 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "about" */ './views/ViewAbout.vue')
+    },
+    {
+      path: '/forum/:id',
+      name: 'ViewForum',
+      props: true,
+      component: () => import('@/views/ViewForum.vue')
     },
     {
       path: '/thread/:id',
