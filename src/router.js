@@ -23,6 +23,12 @@ export default new Router({
         import(/* webpackChunkName: "about" */ './views/ViewAbout.vue')
     },
     {
+      path: '/category/:id',
+      name: 'ViewCategory',
+      props: true,
+      component: () => import('./views/ViewCategory.vue')
+    },
+    {
       path: '/forum/:id',
       name: 'ViewForum',
       props: true,
