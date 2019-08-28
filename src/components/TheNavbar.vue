@@ -16,13 +16,9 @@
       <ul>
         <li class="navbar-user">
           <a href="#">
-            <img
-              class="avatar-small"
-              src="https://pbs.twimg.com/profile_images/881260299420041217/GMVGlDea_400x400.jpg"
-              alt=""
-            />
+            <img class="avatar-small" :src="user.avatar" alt="user avatar" />
             <span>
-              Alex Kyriakidis
+              {{ user.name }}
               <img
                 class="icon-profile"
                 src="../assets/img/arrow-profile.svg"
@@ -37,7 +33,7 @@
             <div class="triangle-drop"></div>
             <ul class="dropdown-menu">
               <li class="dropdown-menu-item">
-                <a href="profile.html">View profile</a>
+                <a href="#">View profile</a>
               </li>
               <li class="dropdown-menu-item"><a href="#">Log out</a></li>
             </ul>
@@ -71,7 +67,15 @@
 </template>
 
 <script>
-export default {};
+import { mapGetters } from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters({
+      user: 'authUser'
+    })
+  }
+};
 </script>
 
 <style></style>
