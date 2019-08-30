@@ -15,7 +15,7 @@
     <nav class="navbar">
       <ul>
         <li class="navbar-user">
-          <a href="#">
+          <router-link :to="{ name: 'ViewProfile' }">
             <img class="avatar-small" :src="user.avatar" alt="user avatar" />
             <span>
               {{ user.name }}
@@ -25,7 +25,7 @@
                 alt=""
               />
             </span>
-          </a>
+          </router-link>
 
           <!-- dropdown menu -->
           <!-- add class "active-drop" to show the dropdown -->

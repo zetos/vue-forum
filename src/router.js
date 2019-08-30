@@ -41,6 +41,12 @@ export default new Router({
       component: () => import('@/views/ViewThreadRead.vue')
     },
     {
+      path: '/me',
+      name: 'ViewProfile',
+      props: true,
+      component: () => import('@/views/ViewProfile.vue')
+    },
+    {
       path: '*',
       name: 'ViewNotFound',
       // redirect: { name: 'ViewHome' }
