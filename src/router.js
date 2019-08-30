@@ -47,6 +47,12 @@ export default new Router({
       component: () => import('@/views/ViewProfile.vue')
     },
     {
+      path: '/me/edit',
+      name: 'ProfileEdit',
+      props: { edit: true },
+      component: () => import('@/views/ViewProfile.vue')
+    },
+    {
       path: '*',
       name: 'ViewNotFound',
       // redirect: { name: 'ViewHome' }
