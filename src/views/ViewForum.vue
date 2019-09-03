@@ -7,7 +7,10 @@
           <p class="text-lead">{{ forum.description }}</p>
         </div>
         <router-link
-          :to="{ name: 'ViewThreadCreate', params: { forum: this.forum } }"
+          :to="{
+            name: 'ViewThreadCreate',
+            params: { forumId: this.forum['.key'] }
+          }"
           class="btn-green btn-small"
         >
           Start a thread
