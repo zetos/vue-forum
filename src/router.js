@@ -35,6 +35,12 @@ export default new Router({
       component: () => import('@/views/ViewForum.vue')
     },
     {
+      path: '/thread/create',
+      name: 'ViewThreadCreate',
+      props: true,
+      component: () => import('@/views/ViewThreadCreate.vue')
+    },
+    {
       path: '/thread/:id',
       name: 'ViewThreadRead',
       props: true,
