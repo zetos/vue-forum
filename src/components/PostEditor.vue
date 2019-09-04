@@ -26,7 +26,19 @@ export default {
   props: {
     threadId: { required: false },
     post: {
-      type: Object
+      type: Object,
+      validator: obj => {
+        const keyIsValid = typeof obj['.key'] === 'string';
+        const textIsValid = typeof obj.text === 'string';
+        const valid = keyIsValid && textIsValid;
+        if (!keyIsValid) {
+          console.error('The post prop Object must include a .key attribute');
+        }
+        if (!textIsValid) {
+          console.error('The post prop Object must include a text attribute');
+        }
+        return valid;
+      }
     }
   },
   data() {
