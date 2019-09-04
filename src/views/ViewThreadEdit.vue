@@ -53,8 +53,8 @@ export default {
     },
     cancel() {
       this.$router.push({
-        name: 'ViewForum',
-        params: { id: this.forum['.key'] }
+        name: 'ViewThreadRead',
+        params: { id: this.id }
       });
     }
   }
