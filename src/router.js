@@ -47,6 +47,12 @@ export default new Router({
       component: () => import('@/views/ViewThreadRead.vue')
     },
     {
+      path: '/thread/:id/edit',
+      name: 'ViewThreadEdit',
+      props: true,
+      component: () => import('@/views/ViewThreadEdit.vue')
+    },
+    {
       path: '/me',
       name: 'ViewProfile',
       props: true,
