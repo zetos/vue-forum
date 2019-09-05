@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import sourceDate from '@/data';
+import { countObjectProperties } from '@/utils';
 
 Vue.use(Vuex);
 
@@ -13,7 +14,11 @@ export default new Vuex.Store({
   getters: {
     authUser(state) {
       return state.users[state.authId];
-    }
+    },
+    // Dynamic Getter
+    userThreadsCount: state => id =>
+      countObjectProperties(state.users[id].threads),
+    userPostsCount: state => id => countObjectProperties(state.users[id].posts)
   },
   mutations: {
     // mutations args: (objectToAddNewProp, {propertyName, valueOfProperty})
