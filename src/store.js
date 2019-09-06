@@ -6,6 +6,18 @@ import { countObjectProperties } from '@/utils';
 
 Vue.use(Vuex);
 
+// High Order Mutation
+const appendChildToParent = ({ parent, child }) => (
+  state,
+  { childId, parentId }
+) => {
+  const resource = state[parent][parentId];
+  if (!resource[child]) {
+    Vue.set(resource, child, {});
+  }
+  Vue.set(resource[child], childId, childId);
+};
+
 export default new Vuex.Store({
   state: {
     ...sourceDate,
@@ -31,34 +43,22 @@ export default new Vuex.Store({
     setThread(state, { thread, threadId }) {
       Vue.set(state.threads, threadId, thread);
     },
-    appendPostToThread(state, { postId, threadId }) {
-      const thread = state.threads[threadId];
-      if (!thread.posts) {
-        Vue.set(thread, 'posts', {});
-      }
-      Vue.set(thread.posts, postId, postId);
-    },
-    appendPostToUser(state, { postId, userId }) {
-      const user = state.users[userId];
-      if (!user.posts) {
-        Vue.set(user, 'posts', {});
-      }
-      Vue.set(user.posts, postId, postId);
-    },
-    appendThreadToForum(state, { forumId, threadId }) {
-      const forum = state.forums[forumId];
-      if (!forum.threads) {
-        Vue.set(forum, 'threads', {});
-      }
-      Vue.set(forum.threads, threadId, threadId);
-    },
-    appendThreadToUser(state, { userId, threadId }) {
-      const user = state.users[userId];
-      if (!user.threads) {
-        Vue.set(user, 'threads', {});
-      }
-      Vue.set(user.threads, threadId, threadId);
-    }
+    appendPostToThread: appendChildToParent({
+      parent: 'threads',
+      child: 'posts'
+    }),
+    appendPostToUser: appendChildToParent({
+      parent: 'users',
+      child: 'posts'
+    }),
+    appendThreadToForum: appendChildToParent({
+      parent: 'forums',
+      child: 'threads'
+    }),
+    appendThreadToUser: appendChildToParent({
+      parent: 'users',
+      child: 'threads'
+    })
   },
   actions: {
     createPost({ commit, state }, post) {
@@ -68,8 +68,11 @@ export default new Vuex.Store({
       post.publishedAt = Math.floor(Date.now() / 1000);
 
       commit('setPost', { post, postId });
-      commit('appendPostToThread', { threadId: post.threadId, postId });
-      commit('appendPostToUser', { userId: post.userId, postId });
+      commit('appendPostToThread', {
+        parentId: post.threadId,
+        childId: postId
+      });
+      commit('appendPostToUser', { parentId: post.userId, childId: postId });
       return Promise.resolve(state.posts[postId]);
     },
     createThread({ commit, state, dispatch }, { text, title, forumId }) {
@@ -87,8 +90,8 @@ export default new Vuex.Store({
         };
 
         commit('setThread', { threadId, thread });
-        commit('appendThreadToForum', { forumId, threadId });
-        commit('appendThreadToUser', { userId, threadId });
+        commit('appendThreadToForum', { parentId: forumId, childId: threadId });
+        commit('appendThreadToUser', { parentId: userId, childId: threadId });
 
         dispatch('createPost', { text, threadId }).then(post => {
           commit('setThread', {
