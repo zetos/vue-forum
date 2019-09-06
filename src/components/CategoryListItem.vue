@@ -14,7 +14,6 @@
 <script>
 import ForumList from './ForumList';
 
-
 export default {
   components: {
     ForumList
