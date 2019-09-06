@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import sourceDate from '@/data';
 import { countObjectProperties } from '@/utils';
 
 Vue.use(Vuex);
@@ -20,12 +19,17 @@ const appendChildToParent = ({ parent, child }) => (
 
 export default new Vuex.Store({
   state: {
-    ...sourceDate,
+    categories: {},
+    forums: {},
+    threads: {},
+    posts: {},
+    users: {},
     authId: 'VXjpr2WHa8Ux4Bnggym8QFLdv5C3'
   },
   getters: {
     authUser(state) {
-      return state.users[state.authId];
+      // return state.users[state.authId];
+      return {};
     },
     // Dynamic Getter
     userThreadsCount: state => id =>
