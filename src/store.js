@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import firebase from 'firebase';
 
 import { countObjectProperties } from '@/utils';
 
@@ -138,6 +139,63 @@ export default new Vuex.Store({
     },
     updateUser({ commit }, user) {
       commit('setUser', { userId: user['.key'], user });
+    },
+
+    fetchThread({ state, commit }, { id }) {
+      console.log('🔥 📃', id);
+      return new Promise(resolve => {
+        // Fetch thread
+        firebase
+          .database()
+          .ref('threads')
+          .child(id)
+          .once('value', snapshot => {
+            const thread = snapshot.val();
+            commit('setThread', {
+              threadId: snapshot.key,
+              thread: { ...thread, '.key': snapshot.key }
+            });
+            resolve(state.threads[id]);
+          });
+      });
+    },
+
+    fetchUser({ state, commit }, { id }) {
+      console.log('🔥 🙋', id);
+      return new Promise(resolve => {
+        // Fetch user
+        firebase
+          .database()
+          .ref('users')
+          .child(id)
+          .once('value', snapshot => {
+            const user = snapshot.val();
+            commit('setUser', {
+              userId: snapshot.key,
+              user: { ...user, '.key': snapshot.key }
+            });
+            resolve(state.users[id]);
+          });
+      });
+    },
+
+    fetchPost({ state, commit }, { id }) {
+      console.log('🔥 💬', id);
+      return new Promise(resolve => {
+        // Fetch post
+        firebase
+          .database()
+          .ref('posts')
+          .child(id)
+          .once('value', snapshot => {
+            const post = snapshot.val();
+            commit('setPost', {
+              postId: snapshot.key,
+              post: { ...post, '.key': snapshot.key }
+            });
+            resolve(state.posts[id]);
+          });
+      });
     }
   }
 });
