@@ -157,6 +157,10 @@ export default new Vuex.Store({
       return dispatch('fetchItem', { resource: 'posts', id, emoji: '💬' });
     },
 
+    fetchPosts({ dispatch }, { ids }) {
+      return dispatch('fetchItems', { resource: 'posts', ids, emoji: '💬' });
+    },
+
     fetchItem({ state, commit }, { id, emoji, resource }) {
       console.log('🔥', emoji, id);
       return new Promise(resolve => {
@@ -173,6 +177,12 @@ export default new Vuex.Store({
             resolve(state[resource][id]);
           });
       });
+    },
+
+    fetchItems({ dispatch }, { ids, emoji, resource }) {
+      return Promise.all(
+        ids.map(id => dispatch('fetchItem', { id, resource, emoji }))
+      );
     }
   }
 });

@@ -71,13 +71,16 @@ export default {
     this.$store.dispatch('fetchThread', { id: this.id }).then(thread => {
       // Fetch user
       this.$store.dispatch('fetchUser', { id: thread.userId });
-      Object.keys(thread.posts).forEach(postId => {
-        // Fetch post
-        this.$store.dispatch('fetchPost', { id: postId }).then(post => {
-          // Fetch user
-          this.$store.dispatch('fetchUser', { id: post.userId });
+
+      // Fetch post
+      this.$store
+        .dispatch('fetchPosts', { id: Object.keys(thread.posts) })
+        .then(posts => {
+          posts.forEach(post => {
+            // Fetch user
+            this.$store.dispatch('fetchUser', { id: post.userId });
+          });
         });
-      });
     });
   }
 };
