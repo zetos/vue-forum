@@ -1,9 +1,8 @@
 import { countObjectProperties } from '@/utils';
 
 export default {
-  authUser() {
-    // return state.users[state.authId];
-    return {};
+  authUser(state) {
+    return state.users[state.authId];
   },
   // Dynamic Getter
   userThreadsCount: state => id =>

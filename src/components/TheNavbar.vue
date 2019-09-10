@@ -14,7 +14,7 @@
     <!-- use .navbar-open to open nav -->
     <nav class="navbar">
       <ul>
-        <li class="navbar-user">
+        <li v-if="user" class="navbar-user">
           <router-link :to="{ name: 'ViewProfile' }">
             <img class="avatar-small" :src="user.avatar" alt="user avatar" />
             <span>
