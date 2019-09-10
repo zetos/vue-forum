@@ -27,9 +27,10 @@
 </template>
 
 <script>
-import { countObjectProperties } from '@/utils';
+import { mapActions } from 'vuex';
 import PostList from '@/components/PostList';
 import PostEditor from '@/components/PostEditor';
+import { countObjectProperties } from '@/utils';
 
 export default {
   components: {
@@ -66,16 +67,18 @@ export default {
       );
     }
   },
+
+  methods: {
+    ...mapActions(['fetchThread', 'fetchUser', 'fetchPosts'])
+  },
   created() {
-    this.$store.dispatch('fetchThread', { id: this.id }).then(thread => {
-      this.$store.dispatch('fetchUser', { id: thread.userId });
-      this.$store
-        .dispatch('fetchPosts', { ids: Object.keys(thread.posts) })
-        .then(posts => {
-          posts.forEach(post => {
-            this.$store.dispatch('fetchUser', { id: post.userId });
-          });
+    this.fetchThread({ id: this.id }).then(thread => {
+      this.fetchUser({ id: thread.userId });
+      this.fetchPosts({ ids: Object.keys(thread.posts) }).then(posts => {
+        posts.forEach(post => {
+          this.fetchUser({ id: post.userId });
         });
+      });
     });
   }
 };
