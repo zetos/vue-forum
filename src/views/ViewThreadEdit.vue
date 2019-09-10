@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div v-if="thread && text" class="container">
     <div class="col-full push-top">
       <h1>
         Editing <i>{{ thread.title }}</i>
@@ -33,7 +33,8 @@ export default {
       return this.$store.state.threads[this.id];
     },
     text() {
-      return this.$store.state.posts[this.thread.firstPostId].text;
+      const post = this.$store.state.posts[this.thread.firstPostId];
+      return post ? post.text : null;
     }
   },
   methods: {
@@ -56,6 +57,13 @@ export default {
         name: 'ViewThreadRead',
         params: { id: this.id }
       });
+    },
+    created() {
+      this.$store
+        .dispatch('fetchThread', { id: this.id })
+        .then(thread =>
+          this.$store.dispatch('fetchPost', { id: thread.firstPostId })
+        );
     }
   }
 };
