@@ -30,6 +30,10 @@ export default {
     parent: 'threads',
     child: 'posts'
   }),
+  appendContributorToThread: appendChildToParent({
+    parent: 'threads',
+    child: 'contributors'
+  }),
   appendPostToUser: appendChildToParent({
     parent: 'users',
     child: 'posts'

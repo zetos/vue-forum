@@ -13,6 +13,7 @@ export default {
     const updates = {};
     updates[`posts/${postId}`] = post;
     updates[`threads/${post.threadId}/posts/${postId}`] = postId;
+    updates[`threads/${post.threadId}/contributors/${post.userId}`] = postId;
     updates[`users/${post.userId}/posts/${postId}`] = postId;
 
     firebase
@@ -25,12 +26,16 @@ export default {
           parentId: post.threadId,
           childId: postId
         });
+        commit('appendContributorToThread', {
+          parentId: post.threadId,
+          childId: post.userId
+        });
         commit('appendPostToUser', { parentId: post.userId, childId: postId });
         return Promise.resolve(state.posts[postId]);
       });
   },
 
-  createThread({ commit, state, dispatch }, { text, title, forumId }) {
+  createThread({ commit, state }, { text, title, forumId }) {
     return new Promise(resolve => {
       const threadId = firebase
         .database()
