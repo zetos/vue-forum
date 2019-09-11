@@ -3,18 +3,20 @@
     <TheNavbar />
     <div class="container">
       <router-view v-show="showPage" @ready="showPage = true" />
-      <div v-show="!showPage">loading...</div>
+      <AppSpinner v-show="!showPage" />
     </div>
   </div>
 </template>
 
 <script>
 import TheNavbar from '@/components/TheNavbar';
+import AppSpinner from '@/components/AppSpinner';
 
 export default {
   name: 'app',
   components: {
-    TheNavbar
+    TheNavbar,
+    AppSpinner
   },
   data() {
     return {
