@@ -65,6 +65,11 @@ export default new Router({
       component: () => import('@/views/ViewProfile.vue')
     },
     {
+      path: '/register',
+      name: 'Register',
+      component: () => import('@/views/ViewRegister.vue')
+    },
+    {
       path: '*',
       name: 'ViewNotFound',
       // redirect: { name: 'ViewHome' }
