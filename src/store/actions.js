@@ -35,6 +35,24 @@ export default {
       });
   },
 
+  updatePost({ state, commit }, { id, text }) {
+    return new Promise(resolve => {
+      const post = state.posts[id];
+      commit('setPost', {
+        postId: id,
+        post: {
+          ...post,
+          text,
+          edited: {
+            at: Math.floor(Date.now() / 1000),
+            by: state.authId
+          }
+        }
+      });
+      resolve(post);
+    });
+  },
+
   createThread({ commit, state }, { text, title, forumId }) {
     return new Promise(resolve => {
       const threadId = firebase
@@ -120,21 +138,33 @@ export default {
     });
   },
 
-  updatePost({ state, commit }, { id, text }) {
+  createUser({ commit, state }, { email, name, username, avatar = null }) {
     return new Promise(resolve => {
-      const post = state.posts[id];
-      commit('setPost', {
-        postId: id,
-        post: {
-          ...post,
-          text,
-          edited: {
-            at: Math.floor(Date.now() / 1000),
-            by: state.authId
-          }
-        }
-      });
-      resolve(post);
+      const registeredAt = Math.floor(Date.now() / 1000);
+      const usernameLower = username.toLowerCase();
+      email = email.toLowerCase();
+      const user = {
+        email,
+        name,
+        username,
+        avatar,
+        registeredAt,
+        usernameLower
+      };
+      const userId = firebase
+        .database()
+        .ref('users')
+        .push().key; //temp
+
+      firebase
+        .database()
+        .ref('users')
+        .child(userId)
+        .set(user)
+        .then(() => {
+          commit('setItem', { resource: 'users', id: userId, item: user });
+          resolve(state.users[userId]);
+        });
     });
   },
 
