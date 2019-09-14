@@ -138,7 +138,25 @@ export default {
     });
   },
 
-  createUser({ commit, state }, { email, name, username, avatar = null }) {
+  registerUserWithEmailAndPassword(
+    { dispatch },
+    { email, name, username, password, avatar = null }
+  ) {
+    return firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(res => {
+        return dispatch('createUser', {
+          id: res.user.uid,
+          email,
+          name,
+          username,
+          avatar
+        });
+      });
+  },
+
+  createUser({ commit, state }, { id, email, name, username, avatar = null }) {
     return new Promise(resolve => {
       const registeredAt = Math.floor(Date.now() / 1000);
       const usernameLower = username.toLowerCase();
@@ -151,19 +169,15 @@ export default {
         registeredAt,
         usernameLower
       };
-      const userId = firebase
-        .database()
-        .ref('users')
-        .push().key; //temp
 
       firebase
         .database()
         .ref('users')
-        .child(userId)
+        .child(id)
         .set(user)
         .then(() => {
-          commit('setItem', { resource: 'users', id: userId, item: user });
-          resolve(state.users[userId]);
+          commit('setItem', { resource: 'users', id: id, item: user });
+          resolve(state.users[id]);
         });
     });
   },

@@ -78,7 +78,7 @@ export default {
   methods: {
     register() {
       this.$store
-        .dispatch('createUser', this.form)
+        .dispatch('registerUserWithEmailAndPassword', this.form)
         .then(() => this.$router.push('/'));
     }
   },
