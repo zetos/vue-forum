@@ -5,7 +5,7 @@ import store from '@/store';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -57,14 +57,8 @@ export default new Router({
       path: '/me',
       name: 'ViewProfile',
       props: true,
-      component: () => import('@/views/ViewProfile.vue'),
-      beforeEnter(to, from, next) {
-        if (store.state.authId) {
-          next();
-        } else {
-          next({ name: 'ViewHome' });
-        }
-      }
+      meta: { requiresAuth: true },
+      component: () => import('@/views/ViewProfile.vue')
     },
     {
       path: '/me/edit',
@@ -97,3 +91,19 @@ export default new Router({
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  console.log(`🚦 navigating to ${to.name} from ${from.name}`);
+  // add check of 'requiresAuth' to nested routes
+  if (to.matched.some(route => route.meta.requiresAuth)) {
+    if (store.state.authId) {
+      next();
+    } else {
+      next({ name: 'ViewHome' });
+    }
+  } else {
+    next();
+  }
+});
+
+export default router;
