@@ -162,7 +162,7 @@ export default {
   },
 
   signInWithGoogle({ dispatch }) {
-    const provider = new firebase.auth.GithubAuthProvider();
+    const provider = new firebase.auth.GoogleAuthProvider();
     return firebase
       .auth()
       .signInWithPopup(provider)
@@ -174,7 +174,7 @@ export default {
           .child(user.uid)
           .once('value', snapshot => {
             if (!snapshot.exists()) {
-              return dispatch('createuser', {
+              return dispatch('createUser', {
                 id: user.uid,
                 name: user.displayName,
                 email: user.email,
@@ -235,7 +235,7 @@ export default {
         .once('value', snapshot => {
           if (snapshot.exists()) {
             return dispatch('fetchUser', { id: userId }).then(user => {
-              commit('setAuthId', user);
+              commit('setAuthId', userId);
               resolve(user);
             });
           } else {
