@@ -13,8 +13,8 @@
 
     <!-- use .navbar-open to open nav -->
     <nav class="navbar">
-      <ul>
-        <li v-if="user" class="navbar-user">
+      <ul v-if="user">
+        <li class="navbar-user">
           <router-link :to="{ name: 'ViewProfile' }">
             <img class="avatar-small" :src="user.avatar" alt="user avatar" />
             <span>
@@ -39,8 +39,18 @@
             </ul>
           </div>
         </li>
+        <li class="navbar-item">
+          <a @click.prevent="$store.dispatch('signOut')">Sign Out</a>
+        </li>
       </ul>
-
+      <ul v-else>
+        <li class="navbar-item">
+          <router-link :to="{ name: 'SignIn' }">Sign In</router-link>
+        </li>
+        <li class="navbar-item">
+          <router-link :to="{ name: 'Register' }">Register</router-link>
+        </li>
+      </ul>
       <ul>
         <!-- <li class="navbar-item">
           <a href="index.html">Home</a>
