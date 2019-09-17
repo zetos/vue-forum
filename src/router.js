@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import ViewHome from '@/views/ViewHome.vue';
+import store from '@/store';
 
 Vue.use(Router);
 
@@ -56,7 +57,14 @@ export default new Router({
       path: '/me',
       name: 'ViewProfile',
       props: true,
-      component: () => import('@/views/ViewProfile.vue')
+      component: () => import('@/views/ViewProfile.vue'),
+      beforeEnter(to, from, next) {
+        if (store.state.authId) {
+          next();
+        } else {
+          next({ name: 'ViewHome' });
+        }
+      }
     },
     {
       path: '/me/edit',
@@ -73,6 +81,13 @@ export default new Router({
       path: '/signin',
       name: 'SignIn',
       component: () => import('@/views/ViewSignIn.vue')
+    },
+    {
+      path: '/logout',
+      name: 'SignOut',
+      beforeEnter(to, from, next) {
+        store.dispatch('signOut').then(() => next({ name: 'ViewHome' }));
+      }
     },
     {
       path: '*',
