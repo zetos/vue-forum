@@ -8,6 +8,7 @@
       <ThreadEditor
         :title="thread.title"
         :text="text"
+        ref="editor"
         @save="save"
         @cancel="cancel"
       />
@@ -31,6 +32,9 @@ export default {
       required: true
     }
   },
+  data() {
+    return { saved: false };
+  },
   computed: {
     thread() {
       return this.$store.state.threads[this.id];
@@ -38,6 +42,14 @@ export default {
     text() {
       const post = this.$store.state.posts[this.thread.firstPostId];
       return post ? post.text : null;
+    },
+    hasUnsavedChanges() {
+      const hasChanged =
+        (this.$refs.editor.form.title !== this.thread.title ||
+          this.$refs.editor.form.text !== this.text) &&
+        !this.saved;
+
+      return hasChanged;
     }
   },
   methods: {
@@ -49,6 +61,7 @@ export default {
         title,
         text
       }).then(thread => {
+        this.saved = true;
         this.$router.push({
           name: 'ViewThreadRead',
           params: { id: thread['.key'] }
@@ -70,6 +83,21 @@ export default {
       .then(() => {
         this.asyncDataStatus_fetched();
       });
+  },
+
+  beforeRouteLeave(to, from, next) {
+    if (this.hasUnsavedChanges) {
+      const confirmed = window.confirm(
+        'Are you sure you want to leave? Unsaved changes will be lost'
+      );
+      if (confirmed) {
+        next();
+      } else {
+        next(false);
+      }
+    } else {
+      next();
+    }
   }
 };
 </script>
