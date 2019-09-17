@@ -153,11 +153,37 @@ export default {
           username,
           avatar
         });
-      });
+      })
+      .then(() => dispatch('fetchAuthUser'));
   },
 
   signInWithEmailAndPassword(context, { email, password }) {
     return firebase.auth().signInWithEmailAndPassword(email, password);
+  },
+
+  signInWithGoogle({ dispatch }) {
+    const provider = new firebase.auth.GithubAuthProvider();
+    return firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(data => {
+        const user = data.user;
+        firebase
+          .database()
+          .ref('users')
+          .child(user.uid)
+          .once('value', snapshot => {
+            if (!snapshot.exists()) {
+              return dispatch('createuser', {
+                id: user.uid,
+                name: user.displayName,
+                email: user.email,
+                username: user.email,
+                avatar: user.photoURL
+              }).then(() => dispatch('fetchAuthUser'));
+            }
+          });
+      });
   },
 
   signOut({ commit }) {
@@ -201,8 +227,21 @@ export default {
 
   fetchAuthUser({ dispatch, commit }) {
     const userId = firebase.auth().currentUser.uid;
-    return dispatch('fetchUser', { id: userId }).then(() => {
-      commit('setAuthId', userId);
+    return new Promise(resolve => {
+      firebase
+        .database()
+        .ref('users')
+        .child(userId)
+        .once('value', snapshot => {
+          if (snapshot.exists()) {
+            return dispatch('fetchUser', { id: userId }).then(user => {
+              commit('setAuthId', user);
+              resolve(user);
+            });
+          } else {
+            return resolve(null);
+          }
+        });
     });
   },
 
