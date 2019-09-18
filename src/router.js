@@ -39,6 +39,7 @@ const router = new Router({
       path: '/thread/create/:forumId',
       name: 'ViewThreadCreate',
       props: true,
+      meta: { requiresAuth: true },
       component: () => import('@/views/ViewThreadCreate.vue')
     },
     {
@@ -51,6 +52,7 @@ const router = new Router({
       path: '/thread/:id/edit',
       name: 'ViewThreadEdit',
       props: true,
+      meta: { requiresAuth: true },
       component: () => import('@/views/ViewThreadEdit.vue')
     },
     {
@@ -64,21 +66,25 @@ const router = new Router({
       path: '/me/edit',
       name: 'ProfileEdit',
       props: { edit: true },
+      meta: { requiresAuth: true },
       component: () => import('@/views/ViewProfile.vue')
     },
     {
       path: '/register',
       name: 'Register',
+      meta: { requiresGuest: true },
       component: () => import('@/views/ViewRegister.vue')
     },
     {
       path: '/signin',
       name: 'SignIn',
+      meta: { requiresGuest: true },
       component: () => import('@/views/ViewSignIn.vue')
     },
     {
       path: '/logout',
       name: 'SignOut',
+      meta: { requiresAuth: true },
       beforeEnter(to, from, next) {
         store.dispatch('signOut').then(() => next({ name: 'ViewHome' }));
       }
@@ -98,6 +104,12 @@ router.beforeEach((to, from, next) => {
   store.dispatch('initAuthentication').then(user => {
     if (to.matched.some(route => route.meta.requiresAuth)) {
       if (user) {
+        next();
+      } else {
+        next({ name: 'SignIn' });
+      }
+    } else if (to.matched.some(route => route.meta.requiresGuest)) {
+      if (!user) {
         next();
       } else {
         next({ name: 'ViewHome' });
