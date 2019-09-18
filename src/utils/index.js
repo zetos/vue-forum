@@ -5,4 +5,14 @@ const countObjectProperties = obj => {
   return 0;
 };
 
-export { countObjectProperties };
+const removeEmptyShallowProps = obj => {
+  const objCopy = { ...obj };
+  Object.keys(objCopy).forEach(key => {
+    if (!objCopy[key]) {
+      delete objCopy[key];
+    }
+  });
+  return objCopy;
+};
+
+export { countObjectProperties, removeEmptyShallowProps };
