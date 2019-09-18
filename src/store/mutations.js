@@ -22,6 +22,9 @@ export default {
   setAuthId(state, id) {
     state.authId = id;
   },
+  setUnsubscribeAuthObserver(state, unsubscribe) {
+    state.unsubscribeAuthObserver = unsubscribe;
+  },
   setThread(state, { thread, threadId }) {
     Vue.set(state.threads, threadId, thread);
   },
