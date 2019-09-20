@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   props: {
     threadId: { required: false },
@@ -52,14 +54,18 @@ export default {
     }
   },
   methods: {
+    ...mapActions('posts', ['createPost', 'updatePost']),
+
     save() {
       this.persist().then(post => {
         this.$emit('save', { post });
       });
     },
+
     cancel() {
       this.$emit('cancel');
     },
+
     create() {
       const post = {
         text: this.text,
@@ -67,15 +73,17 @@ export default {
       };
       this.text = '';
 
-      return this.$store.dispatch('createPost', post);
+      return this.createPost(post);
     },
+
     update() {
       const payload = {
         id: this.post['.key'],
         text: this.text
       };
-      return this.$store.dispatch('updatePost', payload);
+      return this.updatePost(payload);
     },
+
     persist() {
       return this.isUpdate ? this.update() : this.create();
     }

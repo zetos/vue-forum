@@ -1,11 +1,11 @@
 import Vue from 'vue';
 
 // High Order Mutation
-export const appendChildToParent = ({ parent, child }) => (
+export const appendChildToParent = ({ child }) => (
   state,
   { childId, parentId }
 ) => {
-  const resource = state[parent][parentId];
+  const resource = state.items[parentId];
   if (!resource[child]) {
     Vue.set(resource, child, {});
   }

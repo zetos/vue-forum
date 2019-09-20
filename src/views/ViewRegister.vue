@@ -78,12 +78,12 @@ export default {
   methods: {
     register() {
       this.$store
-        .dispatch('registerUserWithEmailAndPassword', this.form)
+        .dispatch('auth/registerUserWithEmailAndPassword', this.form)
         .then(() => this.successRedirect());
     },
     registerWithGoogle() {
       this.$store
-        .dispatch('signInWithGoogle')
+        .dispatch('auth/signInWithGoogle')
         .then(() => this.successRedirect());
     },
     successRedirect() {
@@ -97,4 +97,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>
